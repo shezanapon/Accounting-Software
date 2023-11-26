@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="down" ref={ref} {...props} />;
+  return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const Payment = () => {
-   const names=["None","Shezan","KArim","RAhim","AZim"];
+const Cost = () => {
+   const names=["Advance for Slot","Remaining for Slot","Football","Accessories","Other"];
    const [open, setOpen] = React.useState(false);
 
    const handleClickOpen = () => {
@@ -20,11 +20,11 @@ const Payment = () => {
     
     function handleSubmit(e){
       const form = document.forms.paymentForm;
-      const name = form.name.value;
+      const cost = form.cost.value;
       const amount = form.amount.value;
       const date = form.date.value;
   
-      const user = { name, amount, date };
+      const user = { cost, amount, date };
       console.log("Form submitted:", user);
 
     }
@@ -33,15 +33,14 @@ const Payment = () => {
             <Grid >
             <form name="paymentForm" onSubmit={(e) => e.preventDefault()}>
             <Grid item xs={4}>
-            <Typography sx={{paddingBottom:"5px"}}>Select Your Name</Typography>
+            <Typography sx={{paddingBottom:"5px"}}>Cost on</Typography>
             <FormControl sx={{ m: 1, minWidth: 220,paddingBottom:"15px" }} size="small">
-          <InputLabel >name</InputLabel>
+          <InputLabel >Cost</InputLabel>
           <Select
             labelId="demo-select-small-label"
             id="demo-select-small"
-            label="Name"
-            name="name"
-            
+            label="Cost"
+            name="cost"
           >
             
               {names.map((name)=>(
@@ -61,14 +60,14 @@ const Payment = () => {
                 <TextField name="amount" size='small' id="outlined-basic" label="Amount" variant="outlined" sx={{paddingBottom:"30px"}}/>
                 </Grid>
                 <Grid item xs={4}>
-            <Typography sx={{paddingBottom:"5px"}}>Payment Date</Typography>
+            <Typography sx={{paddingBottom:"5px"}}> Date</Typography>
                 <TextField name="date" size='small' id="outlined-basic" type='date' variant="outlined" sx={{paddingBottom:"30px",width:"228px"}}/>
                 </Grid>
                 <Grid>
                   <Box>
                     <Button  variant='contained' onClick={handleClickOpen}>Submit</Button>
                     <Dialog
-                    sx={{width:"380px",height:"280px"}}
+                    sx={{width:"50px"}}
         open={open}
         TransitionComponent={Transition}
         keepMounted
@@ -95,4 +94,4 @@ const Payment = () => {
     );
 };
 
-export default Payment;
+export default Cost;

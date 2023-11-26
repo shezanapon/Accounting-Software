@@ -19,6 +19,8 @@ import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Payment from './Payment';
+import Cost from './Cost';
+import PaymentDetails from './PaymentDetails';
 
 
 const drawerWidth = 240;
@@ -77,7 +79,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function HomePage() {
  
-
+ const [openPayment,setOpenPayment]=React.useState(false)
+ const [openCost,setOpenCost]=React.useState(false)
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
@@ -90,12 +93,12 @@ export default function HomePage() {
   };
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex'}}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
         <Toolbar>
           <Typography variant="h6" noWrap sx={{ flexGrow: 1 }} component="div">
-            Persistent drawer
+            Morning Turf Football
           </Typography>
           <IconButton
             color="inherit"
@@ -110,12 +113,19 @@ export default function HomePage() {
       </AppBar>
       <Main open={open} >
         <DrawerHeader />
-        <Payment/>
+        {/* {
+          (openCost===true)?<Cost/>:(openPayment===true)?<Payment/>:<Payment/>
+
+        } */}
+        <PaymentDetails/>
+        
        
       </Main>
       <Drawer
+      
         sx={{
           width: drawerWidth,
+          
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: drawerWidth,
@@ -140,12 +150,12 @@ export default function HomePage() {
             </ListItem>
           ))} */}
           <ListItem>
-          <ListItemButton sx={{bgcolor:"skyblue"}}>
+          <ListItemButton onClick={()=>(setOpenPayment(true) ,setOpenCost(false))}>
             Payment
           </ListItemButton>
           </ListItem>
           <ListItem>
-          <ListItemButton>
+          <ListItemButton onClick={()=>(setOpenCost(true),setOpenPayment(false))}>
             Cost
           </ListItemButton>
           </ListItem>
