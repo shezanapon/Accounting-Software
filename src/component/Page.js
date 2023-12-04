@@ -1,48 +1,29 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import PropTypes from 'prop-types';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import CssBaseline from '@mui/material/CssBaseline';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import InboxIcon from '@mui/icons-material/MoveToInbox';
+import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
-import Payment from './Payment';
-import Cost from './Cost';
-import PaymentDetails from './PaymentDetails';
-import PaymentsIcon from '@mui/icons-material/Payments';
-import CostDetails from './CostDeatails';
-import AppBar from '@mui/material/AppBar';
-import PaidIcon from '@mui/icons-material/Paid';
-import AddCardIcon from '@mui/icons-material/AddCard';
-import ReceiptIcon from '@mui/icons-material/Receipt';
-import DetailsIcon from '@mui/icons-material/Details';
-import SavingsIcon from '@mui/icons-material/Savings';
-import { Style } from '@mui/icons-material';
+import MenuIcon from '@mui/icons-material/Menu';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 
-
-const drawerWidth = 220;
+const drawerWidth = 240;
 
 function HomePage(props) {
-    const [openPayment,setOpenPayment]=React.useState(false);
- const [openCost,setOpenCost]=React.useState(false);
- const [openCostDetails,setOpenCostDetails]=React.useState(false);
- const [openPaymentDetails,setOpenPaymentDetails]=React.useState(false);
- const [payment,setPayment]=React.useState(null)
+    const [openPayment,setOpenPayment]=React.useState(false)
+ const [openCost,setOpenCost]=React.useState(false)
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [color,setColor]=React.useState("");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -50,48 +31,49 @@ function HomePage(props) {
 
   const drawer = (
     <div>
-      
-      <Toolbar>
-        <img style={{height:"50px",width:"185px"}}
-        src='https://i.postimg.cc/pL2WwHR5/Frame-1.png' alt=''></img>
-      </Toolbar>
-      
+      <Toolbar />
       <Divider />
       <List >
-        
+         
           <ListItem>
-          <ListItemButton onClick={()=>(setOpenPaymentDetails(false),setOpenCost(false),
-            setOpenPayment(true),setOpenCostDetails(false),setColor("red"))}>
-          <PaidIcon sx={{marginRight:"8px",color:"green"}}/>
-          <Typography sx={{color:color}}>
-          Make Payment
-          </Typography>
+          <ListItemButton onClick={()=>(setOpenPayment(true) ,setOpenCost(false))}>
+          Payment
           </ListItemButton>
           </ListItem>
           <ListItem>
-          <ListItemButton onClick={()=>(setOpenPaymentDetails(false),setOpenCost(true),setOpenPayment(false),setOpenCostDetails(false))}>
-           <AddCardIcon sx={{marginRight:"8px",color:"red"}}/>Add Cost
-          </ListItemButton>
-          </ListItem>
-          <ListItem>
-          <ListItemButton onClick={(()=>(setOpenPaymentDetails(true),setOpenCost(false),setOpenPayment(false),setOpenCostDetails(false)))}>
-          <ReceiptIcon sx={{marginRight:"8px",color:"skyblue"}}/>Payment Details
-          </ListItemButton>
-          </ListItem>
-          <ListItem>
-          <ListItemButton onClick={()=>(setOpenPaymentDetails(true),setOpenCost(false),setOpenPayment(false),setOpenCostDetails(true))}>
-          <DetailsIcon sx={{marginRight:"8px",color:"darkblue"}}/>Cost Details
+          <ListItemButton onClick={()=>(setOpenCost(true),setOpenPayment(false))}>
+            Cost
           </ListItemButton>
           </ListItem>
           <ListItem>
           <ListItemButton>
-          <SavingsIcon sx={{marginRight:"8px",color:"#f06292"}}/>Savings
+          Transaction
+          </ListItemButton>
+          </ListItem>
+          <ListItem>
+          <ListItemButton>
+          Expenditure
+          </ListItemButton>
+          </ListItem>
+          <ListItem>
+          <ListItemButton>
+          Credit
           </ListItemButton>
           </ListItem>
         </List>
       <Divider />
-      <img style={{height:"50px",width:"185px",marginLeft:"15px"}}
-        src='https://i.postimg.cc/VNmCZTHK/image-3.png' alt=''></img>
+      <List>
+        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+          <ListItem key={text} disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+              </ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 
@@ -104,7 +86,7 @@ function HomePage(props) {
       <AppBar
         position="fixed"
         sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)`},
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
           ml: { sm: `${drawerWidth}px` },
         }}
       >
@@ -119,7 +101,7 @@ function HomePage(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Morning Football Turf
+            Responsive drawer
           </Typography>
         </Toolbar>
       </AppBar>
@@ -161,12 +143,9 @@ function HomePage(props) {
       >
         <Toolbar />
         {
-          (openCost===true)?<Cost/>:(openPayment===true)?<Payment/>:(openCostDetails===true)?
-          <CostDetails/>:(openPaymentDetails===true)?<PaymentDetails setPayment={setPayment}/>:<Payment/>
+          (openCost===true)?<Cost/>:(openPayment===true)?<Payment/>:<Payment/>
 
         }
-        {/* <CostDetails/> */}
-        {/* <PaymentDetails/> */}
       </Box>
     </Box>
   );

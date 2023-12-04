@@ -1,36 +1,50 @@
 import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="down" ref={ref} {...props} />;
 });
 
 const Cost = () => {
+  // const createUser=async()=>{}
    const names=["Advance for Slot","Remaining for Slot","Football","Accessories","Other"];
-   const [open, setOpen] = React.useState(false);
+   const [open, setOpen] =React.useState(false);
+   const usersCollectionRef=collection(db,"cost");
 
    const handleClickOpen = () => {
+    console.log("Opening dialog");
      setOpen(true);
+     
    };
  
    const handleClose = () => {
+    console.log("Closing dialog");
      setOpen(false);
    };
-    
-    function handleSubmit(e){
+      const handleSubmit=async(e)=>{
       const form = document.forms.paymentForm;
       const cost = form.cost.value;
       const amount = form.amount.value;
       const date = form.date.value;
-  
+      console.log("data",form);
       const user = { cost, amount, date };
       console.log("Form submitted:", user);
+      await addDoc(usersCollectionRef,{amount:amount,cost:cost,date:date})
 
     }
     return (
         <div>
-            <Grid >
+          <center>
+          <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",padding:"6px 0px 6px 0px",
+            marginBottom:"30px",color:"white",bgcolor:"#4a148c",borderRadius:"5px",width:"230px"}}>
+            <Typography variant='h6'>
+              ADD COST DETAILS
+              </Typography> 
+            </Box></center>
+            <Grid>
             <form name="paymentForm" onSubmit={(e) => e.preventDefault()}>
             <Grid item xs={4}>
             <Typography sx={{paddingBottom:"5px"}}>Cost on</Typography>
@@ -65,7 +79,7 @@ const Cost = () => {
                 </Grid>
                 <Grid>
                   <Box>
-                    <Button  variant='contained' onClick={handleClickOpen}>Submit</Button>
+                    <Button  variant='contained' onClick={handleSubmit()}>Submit</Button>
                     <Dialog
                     sx={{width:"50px"}}
         open={open}

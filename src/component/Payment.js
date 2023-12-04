@@ -1,14 +1,17 @@
 import { Box, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
+import { addDoc, collection } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
 });
 
 const Payment = () => {
-   const names=["None","Shezan","KArim","RAhim","AZim"];
+   const names=["Shezan","Niaz","Salman","Azam","Imtiaz","Saimon","Rakib","Junaid","Anas"];
    const [open, setOpen] = React.useState(false);
+   const paymentsCollectionRef=collection(db,"payments");
 
    const handleClickOpen = () => {
      setOpen(true);
@@ -18,21 +21,29 @@ const Payment = () => {
      setOpen(false);
    };
     
-    function handleSubmit(e){
+    const handleSubmit=async(e)=>{
       const form = document.forms.paymentForm;
       const name = form.name.value;
+      const received=form.received.value;
       const amount = form.amount.value;
       const date = form.date.value;
   
-      const user = { name, amount, date };
+      const user = { name, amount, date,received };
       console.log("Form submitted:", user);
-
+      await addDoc(paymentsCollectionRef,{amount:amount,name:name,date:date,received:received})
     }
     return (
         <div>
+          <center>
+          <Box sx={{display:"flex",justifyContent:"center",alignItems:"center",padding:"6px 0px 6px 0px",
+            marginBottom:"30px",color:"white",bgcolor:"#4a148c",borderRadius:"5px",width:"230px"}}>
+            <Typography sx={{fontSize:"18.5px"}}>
+              ADD PAYMENT DETAILS
+              </Typography> 
+            </Box></center>
             <Grid >
             <form name="paymentForm" onSubmit={(e) => e.preventDefault()}>
-            <Grid item xs={4}>
+            <Grid >
             <Typography sx={{paddingBottom:"5px"}}>Select Your Name</Typography>
             <FormControl sx={{ m: 1, minWidth: 220,paddingBottom:"15px" }} size="small">
           <InputLabel >name</InputLabel>
@@ -56,17 +67,21 @@ const Payment = () => {
                 
                 </Grid>
                 
-            <Grid item xs={4}>
+            <Grid item >
             <Typography sx={{paddingBottom:"5px"}}>Input Amount</Typography>
                 <TextField name="amount" size='small' id="outlined-basic" label="Amount" variant="outlined" sx={{paddingBottom:"30px"}}/>
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item >
+            <Typography sx={{paddingBottom:"5px"}}>Received By</Typography>
+                <TextField name="received" size='small' id="outlined-basic" label="name" variant="outlined" sx={{paddingBottom:"30px"}}/>
+                </Grid>
+                <Grid item >
             <Typography sx={{paddingBottom:"5px"}}>Payment Date</Typography>
                 <TextField name="date" size='small' id="outlined-basic" type='date' variant="outlined" sx={{paddingBottom:"30px",width:"228px"}}/>
                 </Grid>
                 <Grid>
                   <Box>
-                    <Button  variant='contained' onClick={handleClickOpen}>Submit</Button>
+                    <Button  variant='contained' onClick={handleClickOpen} sx={{marginBottom:"20px"}}>Submit</Button>
                     <Dialog
                     sx={{width:"380px",height:"280px"}}
         open={open}
@@ -91,6 +106,7 @@ const Payment = () => {
                 </Grid>
                 </form>
             </Grid>
+            <img style={{width:"230px"}} src=''alt=''/>
         </div>
     );
 };
